@@ -64,7 +64,7 @@
       </div>
       <div class="form-group">
         <label>Token Ujian (Minta ke Guru)</label>
-        <input type="text" id="examToken" class="form-control" placeholder="Ketik token di sini..." value="ujian1">
+        <input type="text" id="examToken" class="form-control" placeholder="Ketik token di sini...">
       </div>
       <button class="btn btn-primary" style="width:100%;" onclick="startExam()"><i class="fa-solid fa-right-to-bracket"></i> Masuk Ujian</button>
     </div>
@@ -242,8 +242,8 @@
       const studentClass = document.getElementById('studentClass').value;
       const token = document.getElementById('examToken').value.trim();
       
-      // Sinkronisasi Token dengan Dashboard Guru secara fleksibel & case-insensitive
-      let activeToken = "ujian2";
+      // Sinkronisasi Token dengan Dashboard Guru secara default
+      let activeToken = "12345"; // Diubah dari "ujian2" agar sama dengan guru_4.html
       try {
         const stored = localStorage.getItem('activeExamToken');
         if (stored) activeToken = stored;
@@ -428,33 +428,25 @@
         violations: studentData.violations
       };
 
-      // GANTI URL DI BAWAH DENGAN URL WEB APP GOOGLE SCRIPT ANDA
-      // GANTI URL DI BAWAH DENGAN URL WEB APP GOOGLE SCRIPT ANDA YANG BENAR
       const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby6wG6RM-AIrhYHj-Ifhl_FO-TCRxHJ962bQGTIu4YjUGPCjK2XbQUXZ8EClBHylA5C/exec";
       
       const finishBtn = document.getElementById('finishBtn');
       finishBtn.innerHTML = "Mengirim Data... ⌛";
       finishBtn.disabled = true;
 
-      // Kirim data ke Google Sheets dengan mode 'no-cors' agar tidak diblokir browser
       fetch(WEB_APP_URL, {
         method: 'POST',
-        mode: 'no-cors', // WAJIB ADA untuk bypass aturan CORS Google
+        mode: 'no-cors',
         headers: {
           "Content-Type": "text/plain;charset=utf-8" 
         },
         body: JSON.stringify(result)
       })
       .then(response => {
-        // Karena no-cors, kita tidak bisa membaca isi respons, langsung anggap berhasil
         showScreen('doneScreen');
       })
       .catch(error => {
         console.error("Error:", error);
-        alert("Gagal mengirim jawaban ke server. Harap coba lagi atau hubungi guru.");
-        finishBtn.innerHTML = "Kirim Jawaban <i class='fa-solid fa-check'></i>";
-        finishBtn.disabled = false;
-      });
         alert("Gagal mengirim jawaban ke server. Harap coba lagi atau hubungi guru.");
         finishBtn.innerHTML = "Kirim Jawaban <i class='fa-solid fa-check'></i>";
         finishBtn.disabled = false;
