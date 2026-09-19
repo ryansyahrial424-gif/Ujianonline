@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Guru - Portal Ujian Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #a8edd9 0%, #fed6e3 100%);
+      --primary: #ff6b6b; --secondary: #4ecdc4; --purple: #6c5ce7;
+      --danger: #ff7675; --dark: #2d3436; --card-bg: rgba(255, 255, 255, 0.95);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); min-height: 100vh; color: var(--dark); padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .card { background: var(--card-bg); border-radius: 24px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 3px solid #fff; margin-bottom: 20px; }
+    h2 { font-family: 'Fredoka', sans-serif; color: var(--purple); margin-bottom: 15px; }
+    .form-group { margin-bottom: 15px; text-align: left; }
+    .form-group label { font-weight: 600; display: block; margin-bottom: 5px; }
+    .form-control { width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #dfe6e9; font-size: 1rem; outline: none; }
+    .form-control:focus { border-color: var(--purple); }
+    .btn { font-family: 'Fredoka', sans-serif; font-size: 1rem; padding: 10px 18px; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s; }
+    .btn-primary { background: var(--purple); color: #fff; box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-success { background: #00b894; color: #fff; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; border-radius: 12px; overflow: hidden; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #f1f2f6; font-size: 0.9rem; }
+    th { background: var(--purple); color: white; font-family: 'Fredoka', sans-serif; }
+    tr:hover { background: #f8f9fa; }
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+    .badge-warn { background: #ffeaa7; color: #d63031; }
+    .badge-success { background: #55efc4; color: #00b894; }
+    .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- PANEL KONTROL GURU -->
+    <div class="card">
+      <h2><i class="fa-solid fa-chalkboard-user"></i> Panel Kontrol Guru Ujian Online</h2>
+      <div class="flex-row" style="margin-bottom: 20px;">
+        <div class="form-group" style="flex: 1; margin-bottom:0;">
+          <label>Atur Token Ujian Aktif</label>
+          <input type="text" id="tokenInput" class="form-control" placeholder="Contoh: SMP99">
+        </div>
+        <button class="btn btn-primary" style="margin-top: 24px;" onclick="saveToken()">Simpan Token</button>
+      </div>
+      <div class="flex-row" style="gap: 10px;">
+        <button class="btn btn-danger" onclick="clearData()"><i class="fa-solid fa-trash"></i> Hapus Semua Data Nilai</button>
+        <button class="btn btn-success" onclick="exportToExcel()"><i class="fa-solid fa-file-excel"></i> Unduh Rekap (.xls / Excel)</button>
+      </div>
+    </div>
+
+    <!-- TABEL HASIL UJIAN SISWA -->
+    <div class="card">
+      <h2><i class="fa-solid fa-clipboard-list"></i> Daftar Nilai & Hasil Ujian Siswa</h2>
+      <div class="flex-row" style="margin-bottom: 15px;">
+        <div style="flex:1;">
+          <label style="font-size:0.85rem; font-weight:600;">Filter Kelas:</label>
+          <select id="filterClass" class="form-control" onchange="renderTable()">
+            <option value="ALL">Semua Kelas</option>
+            <option value="7.1">Kelas 7.1</option>
+            <option value="7.2">Kelas 7.2</option>
+            <option value="7.3">Kelas 7.3</option>
+            <option value="8.1">Kelas 8.1</option>
+            <option value="8.2">Kelas 8.2</option>
+            <option value="9.1">Kelas 9.1</option>
+            <option value="9.2">Kelas 9.2</option>
+          </select>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table id="exportTable">
+          <thead>
+            <tr>
+              <th>Waktu Kirim</th>
+              <th>Nama Siswa</th>
+              <th>Kelas</th>
+              <th>Mapel</th>
+              <th>Nilai PG</th>
+              <th>Pelanggaran Tab</th>
+              <th>Jawaban Essay</th>
+            </tr>
+          </thead>
+          <tbody id="resultTableBody">
+            <tr><td colspan="7" style="text-align:center; color:#b2bec3;">Belum ada data ujian yang masuk.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // MASUKKAN URL WEB APP GOOGLE SCRIPT ANDA DI ANTARA TANDA KUTIP DI BAWAH INI:
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxvyw8Jq0Q_o59pzCqm095VhEtqjigDOuUJa7IzjRSNBMAHSWvBjRlYSj20gpm8hnY/exec";
+
+    window.onload = function() {
+      const activeToken = localStorage.getItem('activeExamToken') || "SMP99";
+      document.getElementById('tokenInput').value = activeToken;
+      renderTable();
+    };
+
+    function saveToken() {
+      const newToken = document.getElementById('tokenInput').value.trim();
+      if (!newToken) return alert("Token tidak boleh kosong!");
+      localStorage.setItem('activeExamToken', newToken);
+      alert(`Token ujian berhasil diubah menjadi: ${newToken}`);
+    }
+
+    async function renderTable() {
+      const tbody = document.getElementById('resultTableBody');
+      const filterClass = document.getElementById('filterClass').value;
+      
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#b2bec3;">Memuat data dari server online...</td></tr>`;
+
+      try {
+        let response = await fetch(WEB_APP_URL);
+        let history = await response.json();
+
+        if (filterClass !== "ALL") {
+          history = history.filter(item => item.class === filterClass);
+        }
+
+        if (history.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#b2bec3;">Belum ada data ujian yang masuk.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = '';
+        history.forEach((item) => {
+          const row = document.createElement('tr');
+          const violText = `${item.violations || 0}x Pindah Tab`;
+
+          row.innerHTML = `
+            <td>${item.time}</td>
+            <td>${item.name}</td>
+            <td>${item.class}</td>
+            <td>${item.subject}</td>
+            <td>${item.score}</td>
+            <td>${violText}</td>
+            <td>${item.essayAnswers}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Gagal memuat data:", error);
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#ff7675;">Gagal terhubung ke database online.</td></tr>`;
+      }
+    }
+
+    function clearData() {
+      alert("Karena menggunakan database online (Google Sheets), penghapusan data rekap harus dilakukan langsung di dalam file Google Spreadsheet Anda.");
+    }
+
+    function exportToExcel() {
+      const tableHTML = document.getElementById('exportTable').outerHTML.replace(/ /g, '%20');
+      const filename = `Rekap_Nilai_Ujian_${new Date().toISOString().slice(0,10)}.xls`;
+      
+      const downloadLink = document.createElement('a');
+      downloadLink.href = 'data:application/vnd.ms-excel,' + tableHTML;
+      downloadLink.download = filename;
+      
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+  </script>
+</body>
+</html>
