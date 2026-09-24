@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="id" class="notranslate" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <title>Ujian Online Siswa - SMPN 4 Praya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-body: #f0f7ff;
+      --primary: #0284c7;
+      --primary-cyan: #06b6d4;
+      --primary-light: #38bdf8;
+      --accent-yellow: #f59e0b;
+      --yellow-bright: #facc15;
+      --success: #10b981;
+      --danger: #ef4444;
+      --dark: #0f172a;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+    }
+    
+    /* Mencegah seleksi teks global untuk keamanan */
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Mengizinkan seleksi teks hanya pada kolom isian */
+    input, textarea {
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+      -ms-user-select: text !important;
+      user-select: text !important;
+    }
+
+    body { 
+      background: var(--bg-body); 
+      background-image: radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 90%, rgba(250, 204, 21, 0.08) 0%, transparent 40%);
+      min-height: 100vh; 
+      color: var(--dark); 
+      padding: 24px 16px; 
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    
+    /* Header Banner Futuristik */
+    .header-banner {
+      background: linear-gradient(135deg, #0284c7 0%, #06b6d4 50%, #0284c7 100%);
+      color: #ffffff;
+      border-radius: 24px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(2, 132, 199, 0.25);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .header-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(250, 204, 21, 0.35) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .header-banner h1 { 
+      font-size: 1.6rem; 
+      font-weight: 800; 
+      letter-spacing: 1px; 
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .header-banner h2 { 
+      font-size: 1.25rem; 
+      font-weight: 800; 
+      margin-top: 6px; 
+      color: var(--yellow-bright); 
+      text-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+    }
+    .header-banner p { font-size: 0.9rem; opacity: 0.95; margin-top: 6px; font-weight: 500; }
+
+    .screen { display: none; animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    .screen.active { display: block; }
+    
+    .card { 
+      background: var(--card-bg); 
+      border-radius: 20px; 
+      padding: 26px; 
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.08); 
+      border: 1px solid rgba(56, 189, 248, 0.25); 
+      margin-bottom: 20px; 
+      backdrop-filter: blur(8px);
+    }
+    
+    .form-group { margin-bottom: 18px; text-align: left; }
+    .form-group label { font-weight: 700; display: block; margin-bottom: 6px; font-size: 0.9rem; color: #334155; }
+    .form-control { 
+      width: 100%; 
+      padding: 12px 16px; 
+      border-radius: 14px; 
+      border: 1.5px solid #cbd5e1; 
+      font-size: 0.95rem; 
+      outline: none; 
+      transition: all 0.25s ease; 
+      background: #f8fafc;
+    }
+    .form-control:focus { 
+      border-color: var(--primary-light); 
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2); 
+    }
+    
+    .btn { 
+      font-size: 0.95rem; 
+      font-weight: 700; 
+      padding: 12px 24px; 
+      border: none; 
+      border-radius: 14px; 
+      cursor: pointer; 
+      transition: all 0.25s ease; 
+    }
+    .btn-primary { 
+      background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%); 
+      color: #fff; 
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+    }
+    .btn-primary:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45);
+    }
+    .btn-secondary { background: #94a3b8; color: #fff; }
+    .btn-secondary:hover { background: #64748b; transform: translateY(-2px); }
+    .btn-group { display: flex; gap: 10px; margin-top: 24px; justify-content: space-between; }
+    
+    .warning-banner { 
+      background: #fef2f2; 
+      border-left: 5px solid var(--danger); 
+      padding: 14px 18px; 
+      border-radius: 12px; 
+      margin-bottom: 20px; 
+      font-size: 0.875rem; 
+      color: #991b1b; 
+      font-weight: 700; 
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.08);
+    }
+    
+    .mapel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; margin-bottom: 22px; }
+    .mapel-btn { 
+      background: #f8fafc; 
+      border: 1.5px solid var(--border-color); 
+      padding: 12px 6px; 
+      border-radius: 14px; 
+      text-align: center; 
+      cursor: pointer; 
+      font-size: 0.8rem; 
+      font-weight: 700; 
+      color: #475569; 
+      transition: all 0.25s ease; 
+    }
+    .mapel-btn i { display: block; font-size: 1.25rem; margin-bottom: 5px; color: var(--primary-cyan); transition: transform 0.25s ease; }
+    .mapel-btn:hover { border-color: var(--primary-light); transform: translateY(-2px); }
+    .mapel-btn.active { 
+      background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%); 
+      color: #fff; 
+      border-color: transparent; 
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.35);
+    }
+    .mapel-btn.active i { color: var(--yellow-bright); transform: scale(1.1); }
+    
+    .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .options-grid { display: grid; gap: 12px; margin-top: 18px; }
+    .option-btn { 
+      background: #f8fafc; 
+      border: 1.5px solid var(--border-color); 
+      padding: 14px 18px; 
+      border-radius: 14px; 
+      text-align: left; 
+      font-size: 0.95rem; 
+      font-weight: 600;
+      cursor: pointer; 
+      width: 100%; 
+      transition: all 0.25s ease; 
+      color: var(--dark); 
+    }
+    .option-btn:hover { background: #f0f9ff; border-color: var(--primary-light); transform: translateX(3px); }
+    .option-btn.selected { 
+      background: #e0f2fe; 
+      border-color: var(--primary); 
+      font-weight: 800; 
+      color: var(--primary); 
+      box-shadow: 0 2px 10px rgba(2, 132, 199, 0.15);
+    }
+    
+    .badge-section { 
+      background: linear-gradient(135deg, #fef08a 0%, #facc15 100%); 
+      color: #713f12; 
+      padding: 6px 16px; 
+      border-radius: 20px; 
+      font-size: 0.8rem; 
+      font-weight: 800; 
+      margin-bottom: 14px; 
+      display: inline-block; 
+      box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3);
+    }
+    textarea.form-control { resize: vertical; min-height: 120px; white-space: pre-wrap; }
+    .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); color: #fff; justify-content: center; align-items: center; flex-direction: column; z-index: 9999; backdrop-filter: blur(6px); }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body oncontextmenu="return false;" class="notranslate" translate="no">
+  <div id="loading" class="loading-overlay">
+    <i class="fa-solid fa-spinner fa-spin fa-3x" style="margin-bottom:15px; color: var(--yellow-bright);"></i>
+    <h3 style="font-weight:800;" id="loadingText">Mengirim Jawaban Ke Server...</h3>
+  </div>
+
+  <div class="container">
+    <!-- HEADER SEKOLAH -->
+    <div class="header-banner">
+      <h1>SMP NEGERI 4 PRAYA</h1>
+      <h2>UJIAN ONLINE ASTS</h2>
+      <p>Mata Pelajaran Terpadu Tahun Pelajaran 2026/2027</p>
+    </div>
+
+    <!-- LOGIN SISWA -->
+    <div id="loginScreen" class="screen card active">
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" id="studentName" class="form-control" placeholder="Masukkan nama kamu..." autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Pilihan Kelas</label>
+        <select id="studentClass" class="form-control">
+          <option value="7.1">Kelas 7.1</option>
+          <option value="7.2">Kelas 7.2</option>
+          <option value="7.3">Kelas 7.3</option>
+          <option value="8.1">Kelas 8.1</option>
+          <option value="8.2">Kelas 8.2</option>
+          <option value="9.1">Kelas 9.1</option>
+          <option value="9.2">Kelas 9.2</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Token Ujian (Minta ke Guru)</label>
+        <input type="text" id="examToken" class="form-control" placeholder="Ketik token di sini..." autocomplete="off">
+      </div>
+      <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="startExam()"><i class="fa-solid fa-right-to-bracket"></i> Masuk Ujian</button>
+    </div>
+
+    <!-- AREA UJIAN -->
+    <div id="examScreen" class="screen card">
+      <div class="warning-banner">
+        ⚠️ <span id="violWarning">Perhatian: Dilarang berpindah tab/aplikasi & menggunakan penerjemah! (Pelanggaran: 0/3)</span>
+      </div>
+      <div class="mapel-grid">
+        <div class="mapel-btn active" onclick="loadSubject('mtk', this)"><i class="fa-solid fa-calculator"></i> MTK</div>
+        <div class="mapel-btn" onclick="loadSubject('ipa', this)"><i class="fa-solid fa-flask"></i> IPA</div>
+        <div class="mapel-btn" onclick="loadSubject('ips', this)"><i class="fa-solid fa-earth-americas"></i> IPS</div>
+        <div class="mapel-btn" onclick="loadSubject('indo', this)"><i class="fa-solid fa-book"></i> B. Indo</div>
+        <div class="mapel-btn" onclick="loadSubject('inggris', this)"><i class="fa-solid fa-language"></i> B. Ing</div>
+        <div class="mapel-btn" onclick="loadSubject('ppkn', this)"><i class="fa-solid fa-shield-halved"></i> PPKn</div>
+        <div class="mapel-btn" onclick="loadSubject('pai', this)"><i class="fa-solid fa-kaaba"></i> PAI</div>
+        <div class="mapel-btn" onclick="loadSubject('pjok', this)"><i class="fa-solid fa-volleyball"></i> PJOK</div>
+        <div class="mapel-btn" onclick="loadSubject('informa', this)"><i class="fa-solid fa-laptop-code"></i> Informa</div>
+        <div class="mapel-btn" onclick="loadSubject('prakarya', this)"><i class="fa-solid fa-scissors"></i> Prakarya</div>
+        <div class="mapel-btn" onclick="loadSubject('mulok', this)"><i class="fa-solid fa-palette"></i> Mulok</div>
+      </div>
+      <div class="quiz-header">
+        <span id="studentBadge" style="font-weight:800; color:var(--primary);"></span>
+      </div>
+      <div id="questionContainer" class="notranslate" translate="no">
+        <div id="sectionBadge" class="badge-section">Bagian A: Pilihan Ganda</div>
+        <div style="font-size:1.05rem; font-weight:700; margin-top:5px; white-space: pre-line;" id="questionText" class="notranslate" translate="no">Memuat soal...</div>
+        <div id="quizContent" style="margin-top: 15px;" class="notranslate" translate="no"></div>
+      </div>
+
+      <!-- NAVIGASI TOMBOL KEMBALI, SELESAI & BERIKUTNYA -->
+      <div class="btn-group">
+        <button id="prevBtn" class="btn btn-secondary" onclick="prevQuestion()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        <div>
+          <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Berikutnya <i class="fa-solid fa-arrow-right"></i></button>
+          <button id="finishBtn" class="btn btn-primary" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); display:none;" onclick="finishExam()">Kirim Jawaban <i class="fa-solid fa-check"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SELESAI -->
+    <div id="doneScreen" class="screen card" style="text-align:center;">
+      <h2 style="color:var(--primary); font-weight:800;">🎉 Jawaban Berhasil Terkirim! 🎉</h2>
+      <p style="margin-top:10px; color:#475569;">Terima kasih telah mengerjakan ujian dengan jujur. Hasil Anda telah tercatat otomatis di Google Sheet Guru.</p>
+    </div>
+  </div>
+
+  <script>
+    // URL GOOGLE APPS SCRIPT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwT0rZNCcj31dOaq6T-dj13M5BckLr5SgricNUqtUYrVSaEFLi8EFq2YIJf7YSnwk_j/exec";
+
+    // Bank Soal Matematika (Kelas 8.1, 8.2, 9.1, 9.2)
+    const bankSoalMatematika = {
+      "8.1": [
+        { type: "pg", q: "1. Hasil penyederhanaan dari operasi perpangkatan 3⁵ × 3³ adalah...", opt: ["A. 3⁸", "B. 3¹⁵", "C. 9⁸", "D. 9¹⁵"], ans: 0 },
+        { type: "pg", q: "2. Bentuk sederhana dari (2⁴)³ adalah...", opt: ["A. 2⁷", "B. 2¹²", "C. 6⁴", "D. 8³"], ans: 1 },
+        { type: "pg", q: "3. Hasil pembagian dari 7⁸ : 7⁵ adalah...", opt: ["A. 7³", "B. 7⁴", "C. 7¹³", "D. 7⁴⁰"], ans: 0 },
+        { type: "pg", q: "4. Nilai dari 12⁰ + (-5)⁰ - (1/2)⁰ adalah...", opt: ["A. 0", "B. 1", "C. 2", "D. 3"], ans: 1 },
+        { type: "pg", q: "5. Bentuk pangkat positif dari 4⁻³ adalah...", opt: ["A. -12", "B. -64", "C. 1 / 4³", "D. 1 / 3⁴"], ans: 2 },
+        { type: "pg", q: "6. Hasil dari (2a³)² × 3a⁴ adalah...", opt: ["A. 6a⁹", "B. 12a¹⁰", "C. 12a⁹", "D. 24a¹⁰"], ans: 1 },
+        { type: "pg", q: "7. Bentuk sederhana dari √75 adalah...", opt: ["A. 3√5", "B. 5√3", "C. 25√3", "D. 15√5"], ans: 1 },
+        { type: "pg", q: "8. Hasil dari √18 + √50 - √32 adalah...", opt: ["A. 2√2", "B. 3√2", "C. 4√2", "D. 5√2"], ans: 2 },
+        { type: "pg", q: "9. Hasil perkalian dari 2√3 × √15 adalah...", opt: ["A. 6√5", "B. 5√6", "C. 30", "D. 10√3"], ans: 0 },
+        { type: "pg", q: "10. Bentuk rasional dari penyebut 8 / √2 adalah...", opt: ["A. 2√2", "B. 4√2", "C. 8√2", "D. 16√2"], ans: 1 },
+        { type: "pg", q: "11. Bentuk sederhana dari 12 / (3 + √3) setelah dirasionalkan adalah...", opt: ["A. 6 - 2√3", "B. 6 + 2√3", "C. 4 - 2√3", "D. 3 - √3"], ans: 0 },
+        { type: "pg", q: "12. Nilai dari 64^(2/3) adalah...", opt: ["A. 8", "B. 16", "C. 32", "D. 64"], ans: 1 },
+        { type: "pg", q: "13. Luas sebuah persegi adalah 180 cm². Panjang sisi persegi tersebut dalam bentuk akar paling sederhana adalah...", opt: ["A. 6√5 cm", "B. 5√6 cm", "C. 9√2 cm", "D. 12√5 cm"], ans: 0 },
+        { type: "pg", q: "14. Pernyataan yang benar mengenai bunyi Teorema Pythagoras adalah...", opt: ["A. Pada segitiga sembarang, kuadrat sisi miring sama dengan jumlah sisi lainnya", "B. Pada segitiga siku-siku, kuadrat sisi miring sama dengan jumlah kuadrat kedua sisi siku-sikunya", "C. Pada segitiga siku-siku, jumlah panjang sisi tegak sama dengan panjang sisi miring", "D. Pada segitiga sama kaki, kuadrat alas sama dengan jumlah kuadrat sisi miring"], ans: 1 },
+        { type: "pg", q: "15. Jika segitiga PQR siku-siku di Q, maka rumus Teorema Pythagoras yang berlaku adalah...", opt: ["A. PR² = PQ² + QR²", "B. PQ² = PR² + QR²", "C. QR² = PQ² + PR²", "D. PR = PQ + QR"], ans: 0 },
+        { type: "pg", q: "16. Panjang sisi siku-siku sebuah segitiga adalah 9 cm dan 12 cm. Panjang sisi miringnya adalah...", opt: ["A. 13 cm", "B. 14 cm", "C. 15 cm", "D. 17 cm"], ans: 2 },
+        { type: "pg", q: "17. Diketahui panjang sisi miring segitiga siku-siku adalah 25 cm dan panjang salah satu sisi siku-sikunya 7 cm. Panjang sisi siku-siku lainnya adalah...", opt: ["A. 20 cm", "B. 22 cm", "C. 23 cm", "D. 24 cm"], ans: 3 },
+        { type: "pg", q: "18. Kelompok tiga bilangan berikut yang merupakan Tripel Pythagoras adalah...", opt: ["A. 6, 8, 12", "B. 8, 15, 17", "C. 9, 12, 16", "D. 10, 20, 26"], ans: 1 },
+        { type: "pg", q: "19. Pasangan bilangan berikut yang BUKAN merupakan Tripel Pythagoras adalah...", opt: ["A. 5, 12, 13", "B. 7, 24, 25", "C. 9, 40, 41", "D. 10, 15, 20"], ans: 3 },
+        { type: "pg", q: "20. Jika (x, 24, 25) merupakan Tripel Pythagoras dengan 25 sebagai bilangan terbesar, maka nilai x adalah...", opt: ["A. 6", "B. 7", "C. 8", "D. 9"], ans: 1 },
+        { type: "pg", q: "21. Sebuah tangga sepanjang 10 meter disandarkan pada dinding. Jarak ujung bawah tangga ke dinding adalah 6 meter. Tinggi dinding yang dicapai tangga tersebut adalah...", opt: ["A. 7 meter", "B. 8 meter", "C. 8,5 meter", "D. 9 meter"], ans: 1 },
+        { type: "pg", q: "22. Suatu kapal berlayar ke arah Utara sejauh 12 km, kemudian berbelok ke arah Timur sejauh 16 km. Jarak kapal sekarang dari titik awal keberangkatan adalah...", opt: ["A. 20 km", "B. 22 km", "C. 24 km", "D. 28 km"], ans: 0 },
+        { type: "pg", q: "23. Panjang diagonal persegi panjang yang berukuran panjang 16 cm dan lebar 12 cm adalah...", opt: ["A. 18 cm", "B. 20 cm", "C. 22 cm", "D. 25 cm"], ans: 1 },
+        { type: "pg", q: "24. Jenis segitiga dengan panjang sisi-sisi 7 cm, 24 cm, dan 25 cm adalah...", opt: ["A. Segitiga Lancip", "B. Segitiga Siku-siku", "C. Segitiga Tumpul", "D. Segitiga Sama Sisi"], ans: 1 },
+        { type: "pg", q: "25. Panjang diagonal sebuah persegi adalah 10√2 cm. Panjang sisi persegi tersebut adalah...", opt: ["A. 8 cm", "B. 10 cm", "C. 12 cm", "D. 14 cm"], ans: 1 }
+      ],
+      "8.2": [],
+      "9.1": [
+        { type: "pg", q: "1. Pengertian yang paling tepat untuk Persamaan Linear Dua Variabel (PLDV) adalah...", opt: ["A. Persamaan yang memuat satu variabel berpangkat dua", "B. Persamaan yang memuat dua variabel dengan pangkat tertinggi dari setiap variabelnya adalah satu", "C. Persamaan yang memuat dua variabel dengan salah satu variabel berpangkat dua", "D. Perkalian antara dua variabel dalam satu suku"], ans: 1 },
+        { type: "pg", q: "2. Bentuk umum dari Sistem Persamaan Linear Dua Variabel (SPLDV) adalah...", opt: ["A. ax + by = c dan px + qy = r", "B. ax² + bx + c = 0", "C. ax + b = 0", "D. ax + by + cz = d"], ans: 0 },
+        { type: "pg", q: "3. Di antara persamaan-persamaan berikut, yang merupakan Persamaan Linear Dua Variabel adalah...", opt: ["A. 3x + 5 = 14", "B. 2x² + y = 7", "C. 4x - 3y = 12", "D. xy + 6 = 0"], ans: 2 },
+        { type: "pg", q: "4. Pasangan berurutan (x, y) yang merupakan salah satu penyelesaian dari persamaan 2x + y = 8 adalah...", opt: ["A. (2, 3)", "B. (3, 2)", "C. (4, 1)", "D. (1, 5)"], ans: 1 },
+        { type: "pg", q: "5. Jika x = 2 merupakan nilai x dari penyelesaian 3x + 2y = 12, maka nilai y yang sesuai adalah...", opt: ["A. 2", "B. 3", "C. 4", "D. 5"], ans: 1 },
+        { type: "pg", q: "6. Suatu SPLDV dikatakan memiliki tepat satu penyelesaian secara grafik jika kedua garisnya...", opt: ["A. Sejajar", "B. Berimpit", "C. Berpotongan di satu titik", "D. Tegak lurus tanpa titik potong"], ans: 2 },
+        { type: "pg", q: "7. Langkah pertama dalam menyelesaikan SPLDV dengan metode substitusi adalah...", opt: ["A. Menjumlahkan kedua persamaan", "B. Mengubah salah satu persamaan menjadi bentuk x = ... atau y = ...", "C. Mengalikan kedua persamaan dengan konstanta", "D. Menggambar grafik kedua persamaan"], ans: 1 },
+        { type: "pg", q: "8. Diketahui y = 2x - 1. Jika disubstitusikan ke dalam persamaan x + y = 8, diperoleh nilai x = ...", opt: ["A. 2", "B. 3", "C. 4", "D. 5"], ans: 1 },
+        { type: "pg", q: "9. Penyelesaian dari SPLDV:\n   x = y + 3\n   2x + y = 12\ndengan metode substitusi adalah...", opt: ["A. x = 5, y = 2", "B. x = 4, y = 1", "C. x = 6, y = 3", "D. x = 3, y = 0"], ans: 0 },
+        { type: "pg", q: "10. Diketahui sistem persamaan:\n   y = 3x\n   2x + 3y = 22\nNilai dari x + y adalah...", opt: ["A. 6", "B. 8", "C. 10", "D. 12"], ans: 1 },
+        { type: "pg", q: "11. Himpunan penyelesaian dari SPLDV x - 2y = 0 dan 3x + y = 14 menggunakan substitusi adalah...", opt: ["A. {(2, 4)}", "B. {(4, 2)}", "C. {(2, 1)}", "D. {(6, 3)}"], ans: 1 },
+        { type: "pg", q: "12. Jika x + y = 10 dan x - y = 4, maka nilai dari x × y dengan menggunakan substitusi adalah...", opt: ["A. 21", "B. 24", "C. 25", "D. 28"], ans: 0 },
+        { type: "pg", q: "13. Prinsip dasar dari metode eliminasi pada penyelesaian SPLDV adalah...", opt: ["A. Memasukkan satu persamaan ke persamaan lainnya", "B. Menghilangkan salah satu variabel dengan cara menjumlahkan atau mengurangkan persamaan", "C. Menggambar titik potong pada bidang Cartesius", "D. Membagi kedua persamaan dengan koefisien terbesarnya"], ans: 1 },
+        { type: "pg", q: "14. Diketahui SPLDV:\n   x + y = 9\n   x - y = 3\nUntuk mengeliminasi variabel y, langkah yang harus dilakukan adalah...", opt: ["A. Mengurangkan kedua persamaan", "B. Menjumlahkan kedua persamaan", "C. Mengalikan persamaan pertama dengan 2", "D. Membagi persamaan kedua dengan 3"], ans: 1 },
+        { type: "pg", q: "15. Dengan metode eliminasi, nilai x dari sistem persamaan 2x + 3y = 12 dan 2x - y = 4 adalah...", opt: ["A. 2", "B. 3", "C. 4", "D. 5"], ans: 1 },
+        { type: "pg", q: "16. Himpunan penyelesaian dari sistem persamaan 3x + 2y = 16 dan 2x + 2y = 12 adalah...", opt: ["A. {(4, 2)}", "B. {(2, 4)}", "C. {(3, 3)}", "D. {(5, 1)}"], ans: 0 },
+        { type: "pg", q: "17. Diketahui sistem persamaan 4x - y = 11 dan 2x + 3y = 9. Nilai y yang memenuhi adalah...", opt: ["A. 1", "B. 2", "C. 3", "D. 4"], ans: 0 },
+        { type: "pg", q: "18. Jika 5x + 2y = 19 dan 3x + 2y = 13, maka nilai dari 2x - y adalah...", opt: ["A. 2", "B. 4", "C. 5", "D. 6"], ans: 1 },
+        { type: "pg", q: "19. Metode campuran dalam penyelesaian SPLDV merupakan kombinasi antara metode...", opt: ["A. Grafik dan Substitusi", "B. Eliminasi dan Substitusi", "C. Grafik dan Eliminasi", "D. Matriks dan Grafik"], ans: 1 },
+        { type: "pg", q: "20. Dengan metode campuran, penyelesaian dari 2x + y = 8 dan x - y = 1 adalah...", opt: ["A. x = 2, y = 4", "B. x = 3, y = 2", "C. x = 4, y = 0", "D. x = 3, y = 1"], ans: 1 },
+        { type: "pg", q: "21. Diketahui SPLDV 3x + 4y = 24 dan x + 2y = 10. Nilai dari 2x + 3y adalah...", opt: ["A. 15", "B. 17", "C. 18", "D. 20"], ans: 1 },
+        { type: "pg", q: "22. Jumlah dua buah bilangan cacah adalah 27, sedangkan selisih kedua bilangan tersebut adalah 5. Bilangan terbesar dari kedua bilangan tersebut adalah...", opt: ["A. 11", "B. 13", "C. 16", "D. 18"], ans: 2 },
+        { type: "pg", q: "23. Harga 3 buah buku tulis dan 2 buah pensil adalah Rp13.000,00. Sedangkan harga 2 buah buku tulis dan 5 buah pensil adalah Rp16.000,00. Harga 1 buah buku tulis adalah...", opt: ["A. Rp2.000,00", "B. Rp3.000,00", "C. Rp4.000,00", "D. Rp5.000,00"], ans: 1 },
+        { type: "pg", q: "24. Di sebuah tempat parkir terdapat 40 kendaraan yang terdiri dari mobil (roda 4) dan sepeda motor (roda 2). Jika jumlah seluruh roda kendaraan ada 110 buah, maka banyak mobil di tempat parkir tersebut adalah...", opt: ["A. 15 unit", "B. 20 unit", "C. 25 unit", "D. 30 unit"], ans: 0 },
+        { type: "pg", q: "25. Umur Pak Andi 3 kali umur Budi. Jika selisih umur mereka adalah 30 tahun, maka umur Budi adalah...", opt: ["A. 10 tahun", "B. 15 tahun", "C. 20 tahun", "D. 25 tahun"], ans: 1 }
+      ],
+      "9.2": []
+    };
+    bankSoalMatematika["8.2"] = bankSoalMatematika["8.1"];
+    bankSoalMatematika["9.2"] = bankSoalMatematika["9.1"];
+
+    // Bank Soal Bahasa Inggris (Hanya Kelas 7.1, 7.2, 7.3)
+    const bankSoalBahasaInggris = {
+      "7.1": [
+        { 
+          type: "pg", 
+          q: "Read this text to answer questions number 1-5:\n\nThe Panjat Pinang Competition\nLast Independence Day, my school held a Panjat Pinang competition. Before the competition started, each team discussed how they could reach the prizes at the top of the pole. The pole was covered with grease, so climbing it was not easy.\nAt first, one student tried to climb alone, but he kept slipping down. Then, three other students stood close together and made a strong base. The first student climbed on their shoulders. When he reached the top, another student replaced him and climbed higher.\nAfter several attempts, the team finally reached the top. They took the prizes and helped each other climb down safely. Although they were tired, they were very happy because they had worked together.\n\n1. Why did the first student's attempt fail?", 
+          opt: [
+            "A. He did not want to win the competition.", 
+            "B. The pole was too short for him.", 
+            "C. He tried to climb without enough support from his teammates.", 
+            "D. His teammates refused to help him."
+          ], 
+          ans: 2 
+        },
+        { 
+          type: "pg", 
+          q: "2. What can we infer from the way the team solved the problem?", 
+          opt: [
+            "A. Winning depends only on physical strength.", 
+            "B. Teamwork can help people overcome difficulties.", 
+            "C. The strongest person should always work alone.", 
+            "D. Competition is more important than cooperation."
+          ], 
+          ans: 1 
+        },
+        { 
+          type: "pg", 
+          q: "3. Which action shows the team's most effective strategy?", 
+          opt: [
+            "A. Trying to climb the pole individually", 
+            "B. Waiting until the competition finished", 
+            "C. Making a human base before climbing", 
+            "D. Taking the prizes before reaching the top"
+          ], 
+          ans: 2 
+        },
+        { 
+          type: "pg", 
+          q: "4. If the team had continued climbing individually, what would most likely have happened?", 
+          opt: [
+            "A. They would have reached the top more quickly.", 
+            "B. They might have had more difficulty reaching the prizes.", 
+            "C. They would not have needed teamwork.", 
+            "D. They would have won automatically."
+          ], 
+          ans: 1 
+        },
+        { 
+          type: "pg", 
+          q: "5. What is the best lesson from the story?", 
+          opt: [
+            "A. Difficult competitions should always be avoided.", 
+            "B. Physical strength is the only key to success.", 
+            "C. Cooperation and strategy can help a team achieve its goal.", 
+            "D. The winner is always the strongest participant."
+          ], 
+          ans: 2 
+        }
+      ],
+      "7.2": [],
+      "7.3": []
+    };
+    bankSoalBahasaInggris["7.2"] = bankSoalBahasaInggris["7.1"];
+    bankSoalBahasaInggris["7.3"] = bankSoalBahasaInggris["7.1"];
+
+    // Bank Soal Informatika (Hanya Kelas 7.1, 7.2, 7.3)
+    const bankSoalInformatika = {
+      "7.1": [
+        { type: "pg", q: "1. Kepanjangan dari TIK yang benar di bawah ini adalah …", opt: ["A. Teknologi Informasi dan Komunikasi", "B. Teknologi Informasi dan Komputer", "C. Teknologi Informasi dan Komputasi", "D. Teknologi Informasi dan Kompleks"], ans: 0 },
+        { type: "pg", q: "2. Sesuatu hal yang merupakan bentuk baru dan lebih canggih disebut …", opt: ["A. Komputer", "B. Teknologi", "C. Informasi", "D. Komunikasi"], ans: 1 },
+        { type: "pg", q: "3. Kumpulan sebuah data yang dapat menjadi sebuah berita merupakan …", opt: ["A. Komputer", "B. Teknologi", "C. Informasi", "D. Komunikasi"], ans: 2 },
+        { type: "pg", q: "4. Penyampaian informasi dari satu pihak ke pihak lain disebut …", opt: ["A. Komputer", "B. Teknologi", "C. Informasi", "D. Komunikasi"], ans: 3 },
+        { type: "pg", q: "5. Manakah yang bukan elemen pembelajaran dari Informatika …", opt: ["A. Bernalar Kritis", "B. Berpikir Komputasional", "C. Sistem Komputer", "D. Analisi Data"], ans: 0 },
+        { type: "pg", q: "6. Informatika dan Profil Pelajar Pancasila memiliki ciri-ciri berikut kecuali …", opt: ["A. Berkebinekaan Global", "B. Berdiskusi", "C. Bergotong Royong", "D. Kreatif"], ans: 1 },
+        { type: "pg", q: "7. Belajar informatika tanpa komputer merupakan kegiatan yang bersifat ….", opt: ["A. Unplug", "B. Unpluged", "C. Unplugged", "D. Unnplugged"], ans: 2 },
+        { type: "pg", q: "8. Sebuah informasi yang berisi teks dan gambar atau grafik disebut …", opt: ["A. Informatika", "B. Teknologi", "C. Informasi", "D. Infografis"], ans: 3 },
+        { type: "pg", q: "9. Infografis memiliki sebuah komponen konten yang perlu diperhatikan kecuali …", opt: ["A. Latar Belakang", "B. Masuk akal", "C. Jelas Sumbernya", "D. Harus Benar"], ans: 0 },
+        { type: "pg", q: "10. Sebuah laporan tertulis yang perlu dijelaskan agar dapat dipahami disebut …", opt: ["A. Infografis", "B. Presentasi", "C. Algoritma", "D. Pemrograman"], ans: 1 },
+        { type: "pg", q: "11. Dari segi konten bagian penting alur logika dari sebuah presentasi kecuali ….", opt: ["A. Ringkasan", "B. Latar Belakang", "C. Ukuran Huruf", "D. Penutup/Kesimpulan"], ans: 2 },
+        { type: "pg", q: "12. Menyelesaikan permasalahan secara menyeluruh, logis, dan teratur adalah ….", opt: ["A. Analisis Data", "B. Sistem Komputer", "C. Algoritma Pemrograman", "D. Berpikir Komputasional"], ans: 3 },
+        { type: "pg", q: "13. Memecah masalah yang besar/kompleks menjadi lebih kecil disebut …", opt: ["A. Dekomposisi", "B. Pengenalan Pola", "C. Abstraksi", "D. Desain Algoritma"], ans: 0 },
+        { type: "pg", q: "14. Memahami atau menganalisa dan mencari hal yang berulang disebut …", opt: ["A. Dekomposisi", "B. Pengenalan Pola", "C. Abstraksi", "D. Desain Algoritma"], ans: 1 },
+        { type: "pg", q: "15. Berfokus pada hal-hal yang penting saja membiarkan hal tidak relevan disebut …", opt: ["A. Dekomposisi", "B. Pengenalan Pola", "C. Abstraksi", "D. Desain Algoritma"], ans: 2 },
+        { type: "pg", q: "16. Membuat langkah untuk menyelesaikan masalah berdasarkan pola disebut …", opt: ["A. Dekomposisi", "B. Pengenalan Pola", "C. Abstraksi", "D. Desain Algoritma"], ans: 3 },
+        { type: "pg", q: "17. Tempat penyimpanan elektronis yang menyimpan file elektronis disebut …", opt: ["A. Folder", "B. File", "C. Map", "D. Surel"], ans: 0 },
+        { type: "pg", q: "18. Penyimpanan eletronis untuk menyimpan data dapat dibaca/ditulis disebut ….", opt: ["A. Folder", "B. File", "C. Map", "D. Surel"], ans: 1 },
+        { type: "pg", q: "19. Sebuah file memiliki nama pendek setelah tanda titik di akhir disebut …", opt: ["A. Folder", "B. Subfolder", "C. Ekstensi", "D. File"], ans: 2 },
+        { type: "pg", q: "20. Berikut ini yang termasuk aplikasi atau program pengolah kata adalah …", opt: ["A. Power Point", "B. Media Player", "C. Microsoft Excel", "D. Microsoft Word"], ans: 3 },
+        { type: "pg", q: "21. Berikut ini yang termasuk aplikasi atau program pengolah angka adalah …", opt: ["A. Microsoft Excel", "B. Microsoft Word", "C. Microsoft Access", "D. Microsoft Power Point"], ans: 0 },
+        { type: "pg", q: "22. Aplikasi pengolah kata biasanya digunakan untuk …", opt: ["A. Mengatur perangkat keras", "B. Membuat dan mengedit dokumen teks", "C. Memperbaiki jaringan internet", "D. Mengubah sumber listrik"], ans: 1 },
+        { type: "pg", q: "23. Perintah yang digunakan untuk membuat file baru adalah ….", opt: ["A. Open", "B. Save", "C. New", "D. Print"], ans: 2 },
+        { type: "pg", q: "24. Perintah yang digunakan ketika ingin mencetak file yang sudah dibuat adalah …", opt: ["A. Open", "B. Save", "C. New", "D. Print"], ans: 3 },
+        { type: "pg", q: "25. Perintah yang digunakan ketika ingin membuka file yang sudah ada adalah …", opt: ["A. Open", "B. Save", "C. New", "D. Print"], ans: 0 },
+        { type: "pg", q: "26. Perintah yang digunakan ketika ingin menyimpan file yang sudah dibuat adalah...", opt: ["A. Open", "B. Save", "C. New", "D. Print"], ans: 1 },
+        { type: "pg", q: "27. Perintah yang digunakan ketika ingin menggandakan sebuah file adalah …", opt: ["A. Delete", "B. Paste", "C. Copy", "D. Cut"], ans: 2 },
+        { type: "pg", q: "28. Perintah yang digunakan ketika ingin memindahkan sebuah file adalah ….", opt: ["A. Delete", "B. Paste", "C. Copy", "D. Cut"], ans: 3 },
+        { type: "pg", q: "29. Perintah yang digunakan ketika ingin mengubah nama sebuah file adalah …", opt: ["A. Rename", "B. Delete", "C. Copy", "D. Cut"], ans: 0 },
+        { type: "pg", q: "30. Perintah yang digunakan ketika ingin menghapus sebuah file adalah …", opt: ["A. Rename", "B. Delete", "C. Copy", "D. Cut"], ans: 1 }
+      ],
+      "7.2": [],
+      "7.3": []
+    };
+    bankSoalInformatika["7.2"] = bankSoalInformatika["7.1"];
+    bankSoalInformatika["7.3"] = bankSoalInformatika["7.1"];
+
+    // Bank Soal Prakarya (Hanya Kelas 8.1 dan 8.2)
+    const bankSoalPrakarya = {
+      "8.1": [
+        { type: "pg", q: "1. Limbah keras adalah limbah yang memiliki sifat...", opt: ["A. Mudah membusuk dan berbau", "B. Padat, sulit terurai, dan keras", "C. Cair dan mudah menguap", "D. Lunak dan mudah hancur"], ans: 1 },
+        { type: "pg", q: "2. Contoh limbah keras organik adalah...", opt: ["A. Botol plastik", "B. Pecahan kaca", "C. Tempurung kelapa", "D. Kaleng minuman"], ans: 2 },
+        { type: "pg", q: "3. Contoh limbah keras anorganik adalah...", opt: ["A. Tulang hewan", "B. Cangkang kerang", "C. Potongan kayu", "D. Pecahan keramik"], ans: 3 },
+        { type: "pg", q: "4. Limbah keras organik berasal dari...", opt: ["A. Bahan kimia buatan", "B. Sisa makhluk hidup", "C. Logam hasil industri", "D. Plastik kemasan"], ans: 1 },
+        { type: "pg", q: "5. Limbah keras anorganik sulit terurai karena...", opt: ["A. Berasal dari tumbuhan", "B. Mengandung banyak air", "C. Terbuat dari bahan buatan atau mineral", "D. Mudah dimakan mikroorganisme"], ans: 2 },
+        { type: "pg", q: "6. Prinsip pengolahan limbah yang berarti menggunakan kembali barang bekas disebut...", opt: ["A. Reduce", "B. Reuse", "C. Recycle", "D. Repair"], ans: 1 },
+        { type: "pg", q: "7. Prinsip pengolahan limbah yang berarti mengurangi penggunaan barang sekali pakai disebut...", opt: ["A. Reduce", "B. Reuse", "C. Recycle", "D. Replace"], ans: 0 },
+        { type: "pg", q: "8. Prinsip recycle dalam pengolahan limbah berarti...", opt: ["A. Membuang limbah ke sungai", "B. Mengolah limbah menjadi produk baru", "C. Membakar semua sampah", "D. Menimbun limbah di tanah"], ans: 1 },
+        { type: "pg", q: "9. Tujuan utama pengolahan limbah keras adalah...", opt: ["A. Menambah jumlah sampah", "B. Mengurangi pencemaran lingkungan", "C. Membuat lingkungan kotor", "D. Menghilangkan nilai guna barang"], ans: 1 },
+        { type: "pg", q: "10. Membuat barang hias dari bahan alam, buatan, atau barang bekas adalah...", opt: ["A. Kerajinan", "B. Rekayasa", "C. Budidaya", "D. Pengolahan"], ans: 0 },
+        { type: "pg", q: "11. Tempurung kelapa dapat dimanfaatkan menjadi...", opt: ["A. Kompos cair", "B. Arang dan kerajinan hias", "C. Pupuk daun", "D. Minyak goreng"], ans: 1 },
+        { type: "pg", q: "12. Pecahan kaca termasuk limbah keras...", opt: ["A. Organik", "B. Anorganik", "C. Basah", "D. Cair"], ans: 1 },
+        { type: "pg", q: "13. Cangkang kerang dapat dijadikan produk kerajinan berupa...", opt: ["A. Vas bunga, hiasan dinding, dan aksesori", "B. Sabun mandi dan sampo", "C. Kain batik dan benang", "D. Minyak wangi dan pewarna makanan"], ans: 0 },
+        { type: "pg", q: "14. Berikut yang bukan termasuk limbah keras anorganik adalah...", opt: ["A. Kaleng bekas", "B. Pecahan keramik", "C. Botol plastik", "D. Tulang ayam"], ans: 3 },
+        { type: "pg", q: "15. Mempelajari dasar system konversi produk teknologi tepat guna adalah...", opt: ["A. Kerajinan", "B. Rekayasa", "C. Budi daya", "D. Pengolahan"], ans: 1 },
+        { type: "pg", q: "16. Sebelum diolah menjadi kerajinan, limbah keras sebaiknya...", opt: ["A. Dibiarkan kotor", "B. Dibersihkan dan dikeringkan", "C. Dicampur dengan sampah basah", "D. Dibuang ke selokan"], ans: 1 },
+        { type: "pg", q: "17. Proses awal dalam membuat kerajinan limbah keras adalah...", opt: ["A. Pengemasan", "B. Perencanaan desain", "C. Pemasaran produk", "D. Pengiriman barang"], ans: 1 },
+        { type: "pg", q: "18. Manfaat membuat kerajinan dari limbah keras adalah...", opt: ["A. Menambah pencemaran", "B. Mengurangi kreativitas", "C. Meningkatkan nilai guna limbah", "D. Merusak lingkungan"], ans: 2 },
+        { type: "pg", q: "19. Limbah kaleng bekas dapat dibuat menjadi...", opt: ["A. Pot tanaman", "B. Pupuk kompos", "C. Makanan ternak", "D. Bahan pewarna alami"], ans: 0 },
+        { type: "pg", q: "20. Limbah tulang ikan termasuk limbah keras...", opt: ["A. Organik", "B. Anorganik", "C. Cair", "D. Gas"], ans: 0 },
+        { type: "pg", q: "21. Teknik yang dapat digunakan untuk menghias kerajinan dari limbah keras adalah...", opt: ["A. Membakar sembarangan", "B. Mengecat dan menempel", "C. Mengubur dalam tanah", "D. Merendam di air kotor"], ans: 1 },
+        { type: "pg", q: "22. Berikut yang merupakan contoh produk kerajinan dari botol plastik adalah...", opt: ["A. Lampu hias", "B. Beras kemasan", "C. Pupuk kandang", "D. Garam dapur"], ans: 0 },
+        { type: "pg", q: "23. Limbah keras dari bahan kaca harus ditangani dengan hati-hati karena...", opt: ["A. Mudah membusuk", "B. Dapat melukai kulit", "C. Mengandung banyak air", "D. Mudah dimakan hewan"], ans: 1 },
+        { type: "pg", q: "24. Nilai estetika pada produk kerajinan berarti nilai...", opt: ["A. Keindahan", "B. Kekuatan mesin", "C. Harga bahan baku", "D. Jumlah limbah"], ans: 0 },
+        { type: "pg", q: "25. Nilai fungsional pada produk kerajinan berarti produk tersebut...", opt: ["A. Hanya untuk dipajang", "B. Memiliki kegunaan tertentu", "C. Tidak dapat digunakan", "D. Mudah rusak"], ans: 1 },
+        { type: "pg", q: "26. Faktor penting dalam memilih bahan limbah keras untuk kerajinan adalah...", opt: ["A. Kebersihan, keamanan, dan bentuk bahan", "B. Bau busuk dan warna kusam", "C. Jumlah sampah basah", "D. Tingkat pembusukan"], ans: 0 },
+        { type: "pg", q: "27. Mengubah bahan makanan/minuman menjadi produk siap konsumsi adalah …", opt: ["A. Kerajinan", "B. Rekayasa", "C. Budidaya", "D. Pengolahan"], ans: 3 },
+        { type: "pg", q: "28. Produk kerajinan dari limbah keras dapat memiliki nilai ekonomi apabila...", opt: ["A. Dibuat asal-asalan", "B. Memiliki desain menarik dan kualitas baik", "C. Tidak dibersihkan", "D. Tidak memiliki fungsi"], ans: 1 },
+        { type: "pg", q: "29. Pengemasan produk kerajinan bertujuan untuk...", opt: ["A. Merusak produk", "B. Melindungi dan memperindah tampilan produk", "C. Menghilangkan fungsi produk", "D. Menambah limbah basah"], ans: 1 },
+        { type: "pg", q: "30. Sikap yang tepat dalam mengelola limbah keras adalah...", opt: ["A. Membuang semua limbah ke sungai", "B. Membakar limbah di sembarang tempat", "C. Memilah dan memanfaatkan limbah dengan bijak", "D. Menumpuk limbah tanpa pengolahan"], ans: 2 }
+      ],
+      "8.2": []
+    };
+    bankSoalPrakarya["8.2"] = bankSoalPrakarya["8.1"];
+
+    let studentData = { name: "", class: "", violations: 0 };
+    let currentSubject = "mtk";
+    let currentIdx = 0;
+    let userAnswersPG = [];
+    let userAnswersEssay = [];
+    const MAX_VIOLATIONS = 3;
+
+    // --- FITUR KEAMANAN PERANGKAT & TOMBOL ---
+    document.addEventListener('keydown', function (e) {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) ||
+        (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'c' || e.key === 'C' || e.key === 'v' || e.key === 'V' || e.key === 'a' || e.key === 'A'))
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    document.addEventListener('copy', (e) => e.preventDefault());
+    document.addEventListener('paste', (e) => e.preventDefault());
+    document.addEventListener('cut', (e) => e.preventDefault());
+
+    // --- FITUR DETEKSI AUTO TRANSLATE KHUSUS BAHASA INGGRIS ---
+    const observerTranslate = new MutationObserver((mutations) => {
+      if (currentSubject === 'inggris' && document.getElementById('examScreen').classList.contains('active')) {
+        const isTranslated = document.documentElement.classList.contains('translated-ltr') || 
+                             document.documentElement.classList.contains('translated-rtl') ||
+                             document.querySelector('font[style]') ||
+                             document.querySelector('goog-te-banner-frame');
+        if (isTranslated) {
+          registerViolation("menggunakan penerjemah otomatis / Google Translate pada mata pelajaran Bahasa Inggris");
+        }
+      }
+    });
+
+    observerTranslate.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+      childList: true,
+      subtree: true
+    });
+
+    function enterFullscreen() {
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(() => {});
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+
+    function startExam() {
+      const name = document.getElementById('studentName').value.trim();
+      const studentClass = document.getElementById('studentClass').value;
+      const inputToken = document.getElementById('examToken').value.trim();
+
+      if (!name) return alert("Silakan isi nama lengkap!");
+      if (!inputToken) return alert("Silakan masukkan token ujian!");
+
+      document.getElementById('loadingText').innerText = "Memverifikasi Token...";
+      document.getElementById('loading').style.display = 'flex';
+
+      fetch(`${SCRIPT_URL}?action=getToken`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('loading').style.display = 'none';
+          const activeServerToken = data.token || "SMP99";
+
+          if (inputToken.toUpperCase() !== activeServerToken.toUpperCase()) {
+            return alert("Token ujian salah atau sudah diperbarui oleh guru! Silakan minta token terbaru.");
+          }
+
+          enterFullscreen();
+          studentData = { name, class: studentClass, violations: 0 };
+          document.getElementById('studentBadge').innerText = `${name} (${studentClass})`;
+          showScreen('examScreen');
+          startQuiz();
+        })
+        .catch(err => {
+          document.getElementById('loading').style.display = 'none';
+          console.error(err);
+          alert("Gagal terhubung ke server untuk verifikasi token. Periksa koneksi internet Anda.");
+        });
+    }
+
+    function registerViolation(reason) {
+      if (!document.getElementById('examScreen').classList.contains('active')) return;
+
+      studentData.violations++;
+      document.getElementById('violWarning').innerText = `Perhatian: Dilarang berpindah tab/aplikasi & menggunakan penerjemah! (Pelanggaran: ${studentData.violations}/${MAX_VIOLATIONS})`;
+      
+      if (studentData.violations >= MAX_VIOLATIONS) {
+        alert(`Ujian Anda dihentikan secara otomatis karena telah melakukan pelanggaran lebih dari ${MAX_VIOLATIONS} kali (${reason})!`);
+        finishExam(true);
+      } else {
+        alert(`Peringatan (${studentData.violations}/${MAX_VIOLATIONS}): Terdeteksi ${reason}! Jawaban Anda bisa didiskualifikasi jika melanggar lagi.`);
+      }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        registerViolation("berpindah tab/browser");
+      }
+    });
+
+    window.addEventListener("blur", () => {
+      registerViolation("membuka aplikasi lain / keluar fokus ujian");
+    });
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function loadSubject(subj, btn) {
+      document.querySelectorAll('.mapel-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSubject = subj;
+      startQuiz();
+    }
+
+    function getQuestions() {
+      if (currentSubject === 'mtk') {
+        if (bankSoalMatematika[studentData.class]) {
+          return bankSoalMatematika[studentData.class];
+        }
+      } else if (currentSubject === 'inggris') {
+        if (bankSoalBahasaInggris[studentData.class]) {
+          return bankSoalBahasaInggris[studentData.class];
+        }
+      } else if (currentSubject === 'informa') {
+        if (bankSoalInformatika[studentData.class]) {
+          return bankSoalInformatika[studentData.class];
+        }
+      } else if (currentSubject === 'prakarya') {
+        if (bankSoalPrakarya[studentData.class]) {
+          return bankSoalPrakarya[studentData.class];
+        }
+      }
+      return [];
+    }
+
+    function startQuiz() {
+      currentIdx = 0;
+      userAnswersPG = [];
+      userAnswersEssay = [];
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const questions = getQuestions();
+      const contentArea = document.getElementById('quizContent');
+      contentArea.innerHTML = '';
+
+      if (questions.length === 0) {
+        document.getElementById('sectionBadge').style.display = 'none';
+        document.getElementById('questionText').innerText = "Belum ada soal yang tersedia untuk kelas/mapel ini.";
+        document.getElementById('prevBtn').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('finishBtn').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('sectionBadge').style.display = 'inline-block';
+      const qData = questions[currentIdx];
+
+      document.getElementById('prevBtn').style.display = currentIdx === 0 ? 'none' : 'inline-block';
+      if (currentIdx === questions.length - 1) {
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('finishBtn').style.display = 'inline-block';
+      } else {
+        document.getElementById('nextBtn').style.display = 'inline-block';
+        document.getElementById('finishBtn').style.display = 'none';
+      }
+
+      if (qData.type === 'pg') {
+        document.getElementById('sectionBadge').innerText = "Bagian A: Pilihan Ganda";
+        document.getElementById('questionText').innerText = qData.q;
+
+        const grid = document.createElement('div');
+        grid.classList.add('options-grid');
+
+        qData.opt.forEach((option, idx) => {
+          const btn = document.createElement('button');
+          btn.classList.add('option-btn', 'notranslate');
+          btn.setAttribute('translate', 'no');
+          if (userAnswersPG[currentIdx] === idx) btn.classList.add('selected');
+          btn.innerText = option;
+          btn.onclick = () => selectOption(idx, btn);
+          grid.appendChild(btn);
+        });
+        contentArea.appendChild(grid);
+      } else if (qData.type === 'essay') {
+        document.getElementById('sectionBadge').innerText = "Bagian B: Soal Essay / Uraian";
+        document.getElementById('questionText').innerText = qData.q;
+
+        const textarea = document.createElement('textarea');
+        textarea.classList.add('form-control', 'notranslate');
+        textarea.setAttribute('translate', 'no');
+        textarea.placeholder = "Tuliskan langkah-langkah penyelesaian dan jawaban Anda di sini...";
+        textarea.value = userAnswersEssay[currentIdx] || '';
+        textarea.oninput = (e) => {
+          userAnswersEssay[currentIdx] = e.target.value;
+        };
+
+        contentArea.appendChild(textarea);
+      }
+    }
+
+    function selectOption(selectedIdx, btn) {
+      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      userAnswersPG[currentIdx] = selectedIdx;
+    }
+
+    function nextQuestion() {
+      const questions = getQuestions();
+      if (currentIdx < questions.length - 1) {
+        currentIdx++;
+        showQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIdx > 0) {
+        currentIdx--;
+        showQuestion();
+      }
+    }
+
+    function finishExam(forced = false) {
+      const questions = getQuestions();
+      
+      if (!forced) {
+        let unansweredQuestions = [];
+
+        questions.forEach((q, idx) => {
+          if (q.type === 'pg') {
+            if (userAnswersPG[idx] === undefined || userAnswersPG[idx] === null) {
+              unansweredQuestions.push(idx + 1);
+            }
+          } else if (q.type === 'essay') {
+            if (!userAnswersEssay[idx] || userAnswersEssay[idx].trim() === "") {
+              unansweredQuestions.push(idx + 1);
+            }
+          }
+        });
+
+        if (unansweredQuestions.length > 0) {
+          alert(`Pemberitahuan: Masih ada soal yang belum dikerjakan!\nNomor soal yang belum terjawab: ${unansweredQuestions.join(', ')}.`);
+          return;
+        }
+      }
+
+      // Hitung Nilai PG
+      let pgCount = 0;
+      let correctPG = 0;
+
+      questions.forEach((q, idx) => {
+        if (q.type === 'pg') {
+          pgCount++;
+          if (userAnswersPG[idx] === q.ans) {
+            correctPG++;
+          }
+        }
+      });
+
+      const totalScorePG = pgCount > 0 ? Math.round((correctPG / pgCount) * 100) : 0;
+
+      // Kumpulkan Jawaban Essay
+      const essayAnswersList = [];
+      questions.forEach((q, idx) => {
+        if (q.type === 'essay') {
+          essayAnswersList.push(userAnswersEssay[idx] || "");
+        }
+      });
+
+      const result = {
+        time: new Date().toLocaleString('id-ID'),
+        name: studentData.name,
+        class: studentData.class,
+        subject: currentSubject.toUpperCase(),
+        score: totalScorePG,
+        essayAnswers: essayAnswersList,
+        violations: studentData.violations
+      };
+
+      document.getElementById('loadingText').innerText = "Mengirim Jawaban Ke Server...";
+      document.getElementById('loading').style.display = 'flex';
+
+      if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(result)
+        })
+        .then(() => {
+          document.getElementById('loading').style.display = 'none';
+          showScreen('doneScreen');
+        })
+        .catch(err => {
+          console.error("Gagal mengirim ke server Google Sheet:", err);
+          document.getElementById('loading').style.display = 'none';
+          alert("Gagal terhubung ke server Google Sheet.");
+          showScreen('doneScreen');
+        });
+      } else {
+        document.getElementById('loading').style.display = 'none';
+        alert("PERHATIAN: URL Google Apps Script belum diisi di index.html!");
+        showScreen('doneScreen');
+      }
+    }
+  </script>
+</body>
+</html>
