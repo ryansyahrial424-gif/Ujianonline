@@ -305,7 +305,7 @@
 
   <script>
     // URL GOOGLE APPS SCRIPT
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIhRE-1Au2CaBQLZmG0U832RVB1XCAxKYl6hRknD2lH_cEvYkKBK_qObF5cvbbeNN6Sg/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIhRE-1Au2CaBQLZmG0U832RVB1XCAxKYl6hRknD2lH_cEvYkKBK_qObF5cvbbeNN6Sg/ex";
 
     // Bank Soal Matematika (Kelas 8.1, 8.2, 9.1, 9.2)
     const bankSoalMatematika = {
@@ -474,8 +474,42 @@
     bankSoalInformatika["7.2"] = bankSoalInformatika["7.1"];
     bankSoalInformatika["7.3"] = bankSoalInformatika["7.1"];
 
-    // Bank Soal Prakarya (Hanya Kelas 8.1 dan 8.2)
+    // Bank Soal Prakarya
     const bankSoalPrakarya = {
+      "7.1": [
+        { type: "pg", q: "1. Siswa kelas VII ditugaskan secara berkelompok mengumpulkan kulit jagung bekas panen untuk dijadikan bunga hias. Tindakan tersebut merupakan penerapan prinsip ....", opt: ["A. Replace", "B. Reduce", "C. Reuse", "D. Recycle"], ans: 3 },
+        { type: "pg", q: "2. Perhatikan bahan berikut:\n(1) Kulit jagung\n(2) Plastik kemasan\n(3) Jerami\n(4) Kain perca\n\nKelompok limbah lunak organik ditunjukkan oleh nomor ....", opt: ["A. (1) dan (3)", "B. (1) dan (2)", "C. (2) dan (4)", "D. (3) dan (4)"], ans: 0 },
+        { type: "pg", q: "3. Seorang pengrajin menggunakan pelepah pisang yang telah dikeringkan sebelum dibuat menjadi tas. Tujuan utama proses pengeringan adalah ....", opt: ["A. Mempercepat pewarnaan", "B. Mengurangi berat produk", "C. Mencegah jamur dan pembusukan", "D. Mempermudah pemasaran"], ans: 2 },
+        { type: "pg", q: "4. Berikut yang merupakan contoh limbah lunak anorganik adalah ....", opt: ["A. Kulit jagung", "B. Jerami", "C. Pelepah pisang", "D. Plastik kemasan"], ans: 3 },
+        { type: "pg", q: "5. Prinsip Reuse dalam pengolahan limbah memiliki arti...", opt: ["A. Mendaur ulang sampah menjadi barang baru", "B. Menggunakan kembali sampah atau barang bekas secara langsung tanpa diubah bentuknya", "C. Mengurangi jumlah sampah", "D. Memperbaiki barang yang rusak"], ans: 1 },
+        { type: "pg", q: "6. Teknik yang paling tepat digunakan untuk membuat bingkai foto dari koran bekas adalah ....", opt: ["A. Membatik", "B. Menganyam", "C. Menggulung", "D. Mencetak"], ans: 2 },
+        { type: "pg", q: "7. Sekelompok siswa kreatif di SMP Negeri 4 Praya membuat keranjang dari gulungan koran bekas. Kegiatan tersebut termasuk ....", opt: ["A. Reduce", "B. Reuse", "C. Recycle", "D. Replace"], ans: 2 },
+        { type: "pg", q: "8. Nilai estetika suatu kerajinan lebih banyak dipengaruhi oleh ....", opt: ["A. Harga bahan", "B. Bentuk, warna, dan keindahan produk", "C. Jumlah bahan baku", "D. Lama pengerjaan"], ans: 1 },
+        { type: "pg", q: "9. Plastik dan styrofoam termasuk limbah anorganik karena ....", opt: ["A. Berasal dari tumbuhan", "B. Mudah membusuk", "C. Sulit terurai secara alami", "D. Mudah larut dalam air"], ans: 2 },
+        { type: "pg", q: "10. Dalam penerapan K3 (keamanan, keselamatan kerja, dan kebersihan) saat membuat kerajinan, penggunaan sarung tangan bertujuan untuk ....", opt: ["A. Mempercepat pekerjaan", "B. Menambah keindahan produk", "C. Mengurangi biaya produksi", "D. Menghindari cedera saat bekerja"], ans: 3 },
+        { type: "pg", q: "11. Limbah lunak memiliki keunggulan utama dibandingkan limbah keras yaitu ...", opt: ["A. Proses pelapukan atau penguraiannya relatif lebih cepat", "B. Tidak bisa rusak sama sekali", "C. Sangat keras dan tahan api", "D. Harganya sangat mahal"], ans: 0 },
+        { type: "pg", q: "12. Perhatikan pernyataan berikut!\n(1) Mudah terurai\n(2) Berasal dari makhluk hidup\n(3) Sulit terurai\n(4) Dapat membusuk\n\nCiri limbah lunak organik ditunjukkan oleh nomor ....", opt: ["A. 1, 2, dan 4", "B. 1, 2, dan 3", "C. 2, 3, dan 4", "D. 1 dan 3"], ans: 0 },
+        { type: "pg", q: "13. Produk kerajinan dari pelepah pisang yang memiliki fungsi pakai adalah ....", opt: ["A. Hiasan dinding", "B. Bunga dekoratif", "C. Tas dan dompet", "D. Miniatur rumah"], ans: 2 },
+        { type: "pg", q: "14. Kain perca paling tepat dimanfaatkan menjadi ....", opt: ["A. Pot bunga", "B. Keset atau boneka", "C. Pupuk kompos", "D. Anyaman bambu"], ans: 1 },
+        { type: "pg", q: "15. Tujuan utama pemanfaatan limbah menjadi produk kerajinan adalah ....", opt: ["A. Menambah jumlah sampah", "B. Menghabiskan bahan bekas", "C. Mempercepat proses pembusukan", "D. Mengurangi pencemaran lingkungan"], ans: 3 },
+        { type: "pg", q: "16. Seorang pengrajin memilih jerami yang masih basah untuk dibuat kerajinan. Keputusan tersebut kurang tepat karena ....", opt: ["A. Jerami sulit dibentuk", "B. Jerami mudah lapuk dan berjamur", "C. Jerami terlalu mahal", "D. Jerami sulit diperoleh"], ans: 1 },
+        { type: "pg", q: "17. Teknik yang sering digunakan pada kerajinan kain perca adalah ....", opt: ["A. Menjahit dan menempel", "B. Mengelas", "C. Mencor", "D. Menempa"], ans: 0 },
+        { type: "pg", q: "18. Berikut yang menunjukkan penerapan prinsip Reduce adalah ....", opt: ["A. Membuat tas dari plastik bekas", "B. Menggunakan botol bekas sebagai vas bunga", "C. Mengurangi penggunaan kantong plastik sekali pakai", "D. Membuat hiasan dari koran bekas"], ans: 2 },
+        { type: "pg", q: "19. Faktor yang paling menentukan kualitas kerajinan limbah adalah ....", opt: ["A. Banyaknya limbah yang digunakan", "B. Kebersihan dan pengolahan bahan", "C. Harga jual produk", "D. Ukuran produk"], ans: 1 },
+        { type: "pg", q: "20. Sebuah produk kerajinan memiliki fungsi pakai dan tampilan menarik. Hal tersebut menunjukkan adanya ....", opt: ["A. Nilai ekonomi dan estetika", "B. Nilai sejarah dan budaya", "C. Nilai religius dan sosial", "D. Nilai tradisional dan modern"], ans: 0 },
+        { type: "pg", q: "21. Perhatikan tahapan berikut!\n(1) Pengumpulan bahan\n(2) Finishing\n(3) Pembersihan bahan\n(4) Pembentukan produk\n\nUrutan yang benar adalah ....", opt: ["A. 1-2-3-4", "B. 1-3-4-2", "C. 2-1-3-4", "D. 3-1-4-2"], ans: 1 },
+        { type: "pg", q: "22. Mengapa kerajinan dari limbah memiliki nilai ekonomi?", opt: ["A. Tidak membutuhkan keterampilan", "B. Dapat dijual dan menghasilkan keuntungan", "C. Tidak memerlukan modal", "D. Mudah rusak"], ans: 1 },
+        { type: "pg", q: "23. Seorang siswa membuat dompet dari kemasan kopi bekas. Agar produk tahan lama, langkah yang paling tepat adalah ....", opt: ["A. Tidak perlu dibersihkan", "B. Dilaminasi atau dijahit dengan rapi", "C. Direndam dalam air", "D. Dibiarkan terbuka"], ans: 1 },
+        { type: "pg", q: "24. Perbedaan utama limbah organik dan anorganik terletak pada ....", opt: ["A. Warna bahan", "B. Harga bahan", "C. Kemampuan terurai secara alami", "D. Bentuk bahan"], ans: 2 },
+        { type: "pg", q: "25. Berikut ini yang termasuk kerajinan berbahan limbah lunak anorganik adalah ....", opt: ["A. Bunga dari kulit jagung", "B. Anyaman jerami", "C. Tas dari kemasan plastik", "D. Hiasan dari pelepah pisang"], ans: 2 },
+        { type: "pg", q: "26. Jika sebuah produk kerajinan memiliki desain menarik tetapi mudah rusak, maka aspek yang perlu diperbaiki adalah ....", opt: ["A. Estetika", "B. Kemasan", "C. Fungsi dan kualitas produk", "D. Promosi"], ans: 2 },
+        { type: "pg", q: "27. Kerajinan dari limbah kertas yang dibuat melalui teknik bubur kertas disebut ....", opt: ["A. Anyaman", "B. Papier mâché", "C. Batik", "D. Kolase"], ans: 1 },
+        { type: "pg", q: "28. Seorang pengrajin menggabungkan kain perca dengan plastik bekas menjadi tas belanja. Keunggulan produk tersebut adalah ....", opt: ["A. Sulit digunakan", "B. Tidak memiliki nilai jual", "C. Lebih kreatif dan bernilai ekonomi", "D. Cepat rusak"], ans: 2 },
+        { type: "pg", q: "29. Dalam sebuah pameran, produk dari pelepah pisang kurang diminati karena warnanya kusam. Solusi terbaik adalah ....", opt: ["A. Mengurangi ukuran produk", "B. Menambah proses finishing", "C. Mengganti bahan dengan plastik", "D. Mengurangi jumlah produksi"], ans: 1 },
+        { type: "pg", q: "30. Sebuah sekolah mengadakan lomba membuat kerajinan dari limbah. Tim A menggunakan bahan baru, sedangkan Tim B menggunakan plastik bekas dan kain perca. Jika tujuan lomba mendukung pelestarian lingkungan, tim yang lebih sesuai adalah ....", opt: ["A. Tim A karena bahan baru lebih bersih", "B. Tim A karena lebih mudah dibuat", "C. Tim B karena memanfaatkan limbah yang ada", "D. Keduanya sama saja"], ans: 2 }
+      ],
+      "7.2": [],
+      "7.3": [],
       "8.1": [
         { type: "pg", q: "1. Limbah keras adalah limbah yang memiliki sifat...", opt: ["A. Mudah membusuk dan berbau", "B. Padat, sulit terurai, dan keras", "C. Cair dan mudah menguap", "D. Lunak dan mudah hancur"], ans: 1 },
         { type: "pg", q: "2. Contoh limbah keras organik adalah...", opt: ["A. Botol plastik", "B. Pecahan kaca", "C. Tempurung kelapa", "D. Kaleng minuman"], ans: 2 },
@@ -510,6 +544,8 @@
       ],
       "8.2": []
     };
+    bankSoalPrakarya["7.2"] = bankSoalPrakarya["7.1"];
+    bankSoalPrakarya["7.3"] = bankSoalPrakarya["7.1"];
     bankSoalPrakarya["8.2"] = bankSoalPrakarya["8.1"];
 
     let studentData = { name: "", class: "", violations: 0 };
